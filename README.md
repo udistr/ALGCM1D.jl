@@ -1,4 +1,7 @@
-# AOGCM1D.jl
+# ALGCM1D
+
+[![Build Status](https://travis-ci.com/udistr/ALGCM1D.jl.svg?branch=master)](https://travis-ci.com/udistr/ALGCM1D.jl)
+[![Coverage](https://codecov.io/gh/udistr/ALGCM1D.jl/branch/master/graph/badge.svg)](https://codecov.io/gh/udistr/ALGCM1D.jl)
 
 A code for a simple 1D coupled ocean-atmosphere model.
 

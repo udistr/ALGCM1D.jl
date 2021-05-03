@@ -1,0 +1,13 @@
+name = "ALGCM1D"
+uuid = "6e05bf53-1d50-4a3c-80e7-ec23ba7c00c8"
+authors = ["Udi Strobach <udistr@gmail.com> and Ziv Moreno <moreno_ziv@yahoo.com>"]
+version = "0.1.0"
+
+[compat]
+julia = "1"
+
+[extras]
+Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
+
+[targets]
+test = ["Test"]
