@@ -3,7 +3,9 @@
 [![Build Status](https://travis-ci.com/udistr/ALGCM1D.jl.svg?branch=master)](https://travis-ci.com/udistr/ALGCM1D.jl)
 [![Coverage](https://codecov.io/gh/udistr/ALGCM1D.jl/branch/master/graph/badge.svg)](https://codecov.io/gh/udistr/ALGCM1D.jl)
 
-A code for a simple 1D coupled ocean-atmosphere model.
+This code is under construction
+
+A code for a simple 1D coupled land-atmosphere model.
 
 Prognostic variables:
 
@@ -16,16 +18,8 @@ Processess included:
 
 * Vertical advaction, explicit integration
 * Vetical diffustion:
-  * Large and Yeager (1994) for the ocean
   * Holtslag and Boville (1993) for the atmosphere
-* Bulk formulea for the air-sea interface based on Large and Yeager (2004)
-* Solar radiation including transmision to the deeper ocean
+* Bulk formulea for the land-sea interface
+* Solar radiation
 * Condensation and deposition of super-saturated water vapor
 
-## Issues/todo
-
-* holtslag scheme noisy and boundary layer seems too shallow
-* sum of ocean SW not equal 1
-* improve performance
-* restart
-* documentation

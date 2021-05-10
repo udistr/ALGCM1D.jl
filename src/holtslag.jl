@@ -10,6 +10,7 @@ function holtslag(θv,U,V,LH,SH,ustar,ρA,ZF)
 #θv-virtual potential temperature
 
 Rcrit=0.5;
+a=7.2
 b=8.5
 eps=0.1;
 minshear=0.003
@@ -26,7 +27,7 @@ ZD=[Z[1]:0.01*(Z[1]):Z[end];]
 wθv=SH./ρA./cpa.+humid_fac.*θv[1].*LH./ρA./Av;
 
 #TF=(SH+LH)./ρA./cpa;
-ustar=abs(ustar)
+ustar=abs.(ustar)
 L=-θv[1].*ustar.^3 ./(karman.*gravity_mks.*wθv);
 HD=ZD./L;
 H=ZF[2:end]./L;
@@ -108,7 +109,7 @@ kS[npbl]=kM[npbl]+lc.^2 .*S[npbl].*fm[npbl];
 
 γcq=a*(LH./ρA./Av)/wm.^2*wstar/h
 γct=a*(SH./ρA./cpa)/wm.^2*wstar/h
-γcm=a*(ustar^2)/wstar*wm.^2/h
+γcm=a*(ustar.^2)/wstar.*wm.^2/h
 
 
 println(h)

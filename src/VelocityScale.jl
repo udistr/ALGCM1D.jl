@@ -1,7 +1,3 @@
-include("holtslag_psim.jl")
-include("holtslag_psis.jl")
-include("constants.jl")
-
 function VelocityScale(z,h,L,ustar,θv=nothing,wθv=nothing)
   xi=z/L
   psis=holtslag_psis(xi)
@@ -16,7 +12,7 @@ function VelocityScale(z,h,L,ustar,θv=nothing,wθv=nothing)
       else
           c1=0.6
           a=7.2
-          wθv<0 ? println("wθv",wθv) : nothing
+          #wθv<0 ? println("wθv",wθv) : nothing
           #println("θv",θv)
           wstar=((gravity_mks/θv)*wθv*h)^(1/3)
           wm=(ustar^3+c1*wstar^3)^(1/3)

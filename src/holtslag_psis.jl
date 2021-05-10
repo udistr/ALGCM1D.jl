@@ -1,4 +1,7 @@
 function holtslag_psis(xi)
+    #println("xi")
+    ##println(xi)
+    #println("-------------")
 if (xi>=0) & (xi<=1.)
     y=1+5*xi;
 elseif xi>=1
