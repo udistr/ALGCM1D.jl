@@ -40,7 +40,7 @@ while O[1]>soil_numerical_parameters.eps_h
         theta_l, theta_v, soil_hydraulic = hydraulic_variables(h, T, constants, soil_parameters);        
         O[1] = 1;
     end
-    println(dt)
+    #println(dt)
 end
 
 q_l[1] = -soil_hydraulic.K[1];

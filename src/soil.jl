@@ -20,7 +20,7 @@ if dt2<dt
         TS1,E1,dt2 = Temperature_dist(TS1,theta_l1,theta_v1,q_l1,q_v1,rho_vs1,soil_parameters,ΘA[1],qA[1],SW,UA[1],psi_m,soil_numerical_parameters,constants,atm_parameters,dt2);
           
           dt2_2 = dt2_2+dt2;
-          println(dt2)
+          #println(dt2)
 
       end
 end     

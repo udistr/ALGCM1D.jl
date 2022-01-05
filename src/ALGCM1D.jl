@@ -47,6 +47,11 @@ p2 = plot(
     legend=false
 )
 
+function init()
+  include("src/initialize.jl")
+end
+
+
 function run(stime)
 
   global mtime=stime # model clock
@@ -81,14 +86,13 @@ function run(stime)
       #println("SW")
       #println(SW)
       #println("---------")
-      #=
+    
       if rem(i,360)==0;
         #p1=scatter([i],[TS[end]])
         #display(p1)
-        p2=scatter!([i],[theta_l[end]])
+        p2=scatter!([Dates.format.(mtime,"dd:HH")],[hpbl],xlabel="time [DAY:HOUR]",ylabel="PBL height",xrot=60)
         display(p2)
       end
-      =#
       ########################################################################
       # Surface
       # Input from land: surface volumetric water content and temperature
@@ -117,7 +121,7 @@ function run(stime)
       ########################################################################
       atmosphere(mtime)    
 
-      if rem(i,360)==0;#3600*6/dt
+      if rem(i,3600000)==0;#3600*6/dt
         title = plot(title = mtime, grid = false, axis = false,
         showaxis = false, bottom_margin = -10pt,yaxis=nothing,titlefont = 100)
         #=

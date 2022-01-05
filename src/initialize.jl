@@ -16,7 +16,7 @@ global qS=0.01
 # Initial conditions
 ############################################################################
 # atmospheric temperature in DegC
-TA=24 .-0.0065.*ZAC;
+TA=25 .-0.007.*ZAC;
 PA[1]=101300;
 PA[2:vleva]=PA[1].*exp.(-cumsum(ΔZA./(Rgas.*(TA[2:end].+d2k)./gravity_mks)));
 ρA=PA./(Rgas.*(TA.+d2k));

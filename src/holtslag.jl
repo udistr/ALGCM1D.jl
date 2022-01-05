@@ -9,6 +9,8 @@ function holtslag(θv,U,V,LH,SH,ustar,ρA,ZF)
 # Includes enhenced diffusion below the PBL
 #θv-virtual potential temperature
 
+global hpbl
+
 Rcrit=0.5;
 a=7.2
 b=8.5
@@ -104,14 +106,14 @@ fm=[0; holtslag_local.(GRi)]
 lc=30
 
 i2=min(i+1,SZM)
-kM[npbl]=kM[npbl]+lc.^2 .*S[npbl].*fm[npbl];
-kS[npbl]=kM[npbl]+lc.^2 .*S[npbl].*fm[npbl];
+kM=kM+lc.^2 .*S.*fm;
+kS=kM+lc.^2 .*S.*fm;
 
 γcq=a*(LH./ρA./Av)/wm.^2*wstar/h
 γct=a*(SH./ρA./cpa)/wm.^2*wstar/h
 γcm=a*(ustar.^2)/wstar.*wm.^2/h
 
-
+hpbl=h
 println(h)
 return kM,kS,γcq,γct,γcm
 #[i max(kM) max(kS) wθv max(Ts) U(1)]
