@@ -32,11 +32,20 @@ UA=(0.2/karman).*(log.(ZAC./1e-4));
 
 ############################################################################
 
-global LH=zeros(1); global SH=zeros(1); global TAU=zeros(1);
-global LW=zeros(1); global SW=zeros(1); global E=zeros(1); 
-global KAm=zeros(vleva); global KAt=zeros(vleva);
-global γct=zeros(vleva); global γcq=zeros(vleva); global γcm=zeros(vleva);
-global Qnet=zeros(1);
+global LH=zeros(1); #latent heat flux
+global SH=zeros(1); #sensible heat flux
+global TAU=zeros(1); # wind stress
+global LW=zeros(1); # net longwave
+global SW=zeros(1); # net shortwavwe
+global Qnet=zeros(1); # net heat flux
+global MOL=zeros(1); # monin obokuv length
+global E=zeros(1); # Evaporation
+global KAm=zeros(vleva); # verical mixing of momntum
+global KAt=zeros(vleva); # verical mixing of scalar
+global γct=zeros(vleva); 
+global γcq=zeros(vleva); 
+global γcm=zeros(vleva);
+
 global ustar=0.01;
 FWflux=zeros(size(Qnet));
 ρO=1000
