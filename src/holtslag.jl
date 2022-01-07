@@ -114,7 +114,7 @@ kS=kM+lc.^2 .*S.*fm;
 γcm=a*(ustar.^2)/wstar.*wm.^2/h
 
 hpbl=h
-println(h)
+#println(h)
 return kM,kS,γcq,γct,γcm
 #[i max(kM) max(kS) wθv max(Ts) U(1)]
 

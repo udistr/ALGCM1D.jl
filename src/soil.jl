@@ -2,7 +2,6 @@ function soil(mtime)
 
   global ΘA,qA,SW,UA,head,TS,soil_parameters,theta_l,theta_v,MOL
   #set atmosphric values
-  println(MOL)
   psi_m = holtslag_psim(ZAC[1]/MOL);
   psi_H = holtslag_psis(ZAC[1]/MOL);
 

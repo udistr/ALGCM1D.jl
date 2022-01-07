@@ -27,6 +27,7 @@ karman=0.41;
 albedo=0.04; #ocean albedo
 SunConstant=1362
 Rv=461 #gas constant for water vapor J kg-1 K-1
+humid_fac=0.606;
 
 
 
