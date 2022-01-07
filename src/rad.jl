@@ -1,5 +1,3 @@
-using Dates
-
 function rad(mtime)
 
   global SW,LW,albedo

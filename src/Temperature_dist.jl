@@ -62,7 +62,7 @@ while O[1]>soil_numerical_parameters.eps_T
 end
 
 E = LE/(L*rho_w[end]);
-d
+
 return T,E,dt
 
 end

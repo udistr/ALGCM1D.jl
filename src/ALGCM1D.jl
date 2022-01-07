@@ -48,7 +48,7 @@ p2 = plot(
 )
 
 function init()
-  include("src/initialize.jl")
+  include("initialize.jl")
 end
 
 

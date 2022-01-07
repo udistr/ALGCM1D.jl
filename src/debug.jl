@@ -1,7 +1,6 @@
 using Dates
-
-include("./src/ALGCM1D.jl")
-
+using ALGCM1D
+#include("./src/ALGCM1D.jl")
 
 stime=DateTime(0,7,1)
 ALGCM1D.run(stime)

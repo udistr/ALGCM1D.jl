@@ -1,7 +1,3 @@
-using Plots
-using LinearAlgebra
-using Dates
-
 function atmosphere(mtime)
 
   global Θv,TA,TS,ρA,ustar,LH,SH,E,LW,TAU,Qnet,SW
