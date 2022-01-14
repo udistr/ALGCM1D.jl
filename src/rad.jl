@@ -1,6 +1,6 @@
 function rad(mtime)
 
-  global SW,LW,albedo
+  global SW,LW,albedo,theta_l
 
   ########################################################################
   # radiation

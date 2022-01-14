@@ -18,6 +18,8 @@ include("heaviside.jl")
 include("delta.jl")
 include("angle_of_incidence.jl")
 include("rad.jl")
+include("psim.jl")
+include("psis.jl")
 include("surface.jl")
 include("holtslag.jl")
 include("turbulence.jl")
@@ -52,11 +54,12 @@ function init()
 end
 
 
-function run(stime)
+function run(start_time)
 
-  global mtime=stime # model clock
+  global model_time=start_time # model clock
   global jd,t
   global plt
+  global LH,SH,Qnet,SW,LW,TAU,EVAP
   
   Q=zeros(n)
   sw=zeros(n)
@@ -70,19 +73,19 @@ function run(stime)
       # time
       ########################################################################
 
-      epochdays=Dates.date2epochdays(Date(mtime))
-      t=(Dates.datetime2epochms(mtime)/1000-epochdays*24*60*60)/3600;
+      epochdays=Dates.date2epochdays(Date(model_time))
+      t=(Dates.datetime2epochms(model_time)/1000-epochdays*24*60*60)/3600;
       #julian day
-      jd=Dates.datetime2julian(mtime)-Dates.datetime2julian(DateTime(year(mtime)));
+      jd=Dates.datetime2julian(model_time)-Dates.datetime2julian(DateTime(year(model_time)));
 
-      println(i,"   ",mtime)
+      println(i,"   ",model_time)
       ########################################################################
       # Radiation
       # Input: date, lat and lon
       # Output: longwave and shortwave radiation
       # Future input: cloud fraction and chemestry
       ########################################################################
-      rad(mtime)
+      rad(model_time)
       #println("SW")
       #println(SW)
       #println("---------")
@@ -90,7 +93,7 @@ function run(stime)
       if rem(i,360)==0;
         #p1=scatter([i],[TS[end]])
         #display(p1)
-        p2=scatter!([Dates.format.(mtime,"dd:HH")],[hpbl],xlabel="time [DAY:HOUR]",ylabel="PBL height",xrot=60)
+        p2=scatter!([Dates.format.(model_time,"dd:HH")],[hpbl],xlabel="time [DAY:HOUR]",ylabel="PBL height",xrot=60)
         display(p2)
       end
       ########################################################################
@@ -99,30 +102,30 @@ function run(stime)
       # Input from atmosphere: surface specific humidity, temperature and wind
       # Output: latent heat, sensible heat and wind stress.
       ########################################################################
-      surface(mtime)
-
+      TAU,LH,SH,EVAP=surface(0,UA[1],TS[end],ΘA[1],q_v[end],qA[1],ρA[1],ZAC[1])
+      Qnet=SW-LH-SH-LW
       ########################################################################
       # turbulence
       # Input: temperature, specific humidity, air densiy, surface wind speed, 
       # latent heat, sensible heat, wind stress
       # Output: vertical diffusion for momentum, heat and water
       ########################################################################
-      turbulence(mtime)
+      turbulence(model_time)
 
       ########################################################################
       # Soil
       # Input: fluxes
       ########################################################################
-      soil(mtime)
+      soil(model_time)
 
       ########################################################################
       # Atmosphere
       # Input: fluxes, albedo
       ########################################################################
-      atmosphere(mtime)    
+      atmosphere(model_time)    
 
       if rem(i,3600000)==0;#3600*6/dt
-        title = plot(title = mtime, grid = false, axis = false,
+        title = plot(title = model_time, grid = false, axis = false,
         showaxis = false, bottom_margin = -10pt,yaxis=nothing,titlefont = 100)
         #=
         println("UA")
@@ -144,7 +147,7 @@ function run(stime)
         size = (700, 1200),margin=8mm)
         display(plt)
       end
-      mtime=mtime+Second(ΔT)
+      model_time=model_time+Second(ΔT)
       Q[i]=Qnet
       sw[i]=sum(SW)
       lw[i]=LW

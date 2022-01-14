@@ -10,7 +10,7 @@ function atmosphere(mtime)
   ########################################################################
   TAUS=sign(UA[1]);
 
-  UAst[1]=UA[1]-TAU*TAUS/(ΔZA*ρA[1])*ΔT-(1-Aimp)*(
+  UAst[1]=UA[1]-TAU[1]*TAUS/(ΔZA*ρA[1])*ΔT-(1-Aimp)*(
       KAm[1].*(UA[1]-UA[2])/ΔZA^2*ΔT);
   UAst[end]=UA[end]-(1-Aimp)*(
       KAm[end]*(UA[end]-UAup)/ΔZA^2*ΔT);
@@ -18,7 +18,7 @@ function atmosphere(mtime)
       KAm[1:end-2].*(UA[1:end-2]-UA[2:end-1])/ΔZA^2*ΔT-
       KAm[2:end-1].*(UA[2:end-1]-UA[3:end  ])/ΔZA^2*ΔT);
 
-  qAst[1]=qA[1]+E/(ΔZA*ρO)*ΔT-
+  qAst[1]=qA[1]+EVAP[1]/(ΔZA*ρO)*ΔT-
       (1-Aimp)*(KAt[1]*(qA[1]-qA[2])/ΔZA^2*ΔT+
       (-γcq[1].*KAt[1])/ΔZA*ΔT);
   qAst[end]=qA[end]-(1-Aimp)*(KAt[end]*(qA[end]-q0)/ΔZA^2*ΔT+
@@ -28,7 +28,7 @@ function atmosphere(mtime)
       KAt[2:end-1].*(qA[2:end-1]-qA[3:end  ])/ΔZA^2*ΔT+
       (γcq[1:end-2].*KAt[1:end-2]-γcq[2:end-1].*KAt[2:end-1])/ΔZA*ΔT);
 
-  ΘAst[1]=ΘA[1]+(SH)/cpa/(ΔZA*ΘA[1])*ΔT-
+  ΘAst[1]=ΘA[1]+(SH[1])/cpa/(ΔZA*ΘA[1])*ΔT-
         (1-Aimp)*(KAt[1]*(ΘA[1]-ΘA[2])/ΔZA^2*ΔT+
         (-γct[1].*KAt[1])/ΔZA*ΔT);
   ΘAst[end]=ΘA[end]-

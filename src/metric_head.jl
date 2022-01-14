@@ -3,8 +3,6 @@ function metric_head(h,T, q_o,constants, soil_parameters, soil_numerical_paramet
 # initializing
 h_old = h;
 theta_l, theta_v, soil_hydraulic = hydraulic_variables(h, T, constants, soil_parameters);
-rho_w = 1000 .-7.3e-3.*(T.-(273+4)).^2 .+ 3.79e-5.*(T.-(273+4)).^3;  #water density [kg m^-3]
-q_o = q_o./rho_w[end];
 
 O=zeros(2)
 O[1] = 1; 

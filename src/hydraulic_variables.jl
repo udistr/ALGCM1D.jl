@@ -8,7 +8,6 @@ function hydraulic_variables(h, T, constants, soil_parameters)
 
   Se = 1. ./(1 .+(soil_parameters.alpha.*abs.(h)).^soil_parameters.n).^soil_parameters.m;
   Se[h.>0] .= 1;
-  #Se(Se<1e-3) = 1e-3;
   theta_l = soil_parameters.theta_r.+(soil_parameters.theta_s-soil_parameters.theta_r).*Se;
   theta_a = soil_parameters.theta_s.-theta_l;
   Hr = exp.(h.*constants.M.*constants.g./(constants.Rg.*T));

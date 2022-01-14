@@ -1,6 +1,5 @@
-function surface(mtime)
+function surface(US,UA,TS,ΘA,qV,qA,ρA,Z)
 
-  global SW,LW,LH,SH,E,TAU,Qnet,MOL
   ########################################################################
   # surface
   ########################################################################
@@ -19,42 +18,58 @@ function surface(mtime)
   zh=0.005
   ze=0.005
 
-  CD=karman^2/log(ZAC[1]/zm)^2
-  CH=sqrt(CD)*karman/log(ZAC[1]/zh)
-  CE=sqrt(CD)*karman/log(ZAC[1]/ze)
-
+  ψm=0
+  ψs=0
+  CD=karman^2/log(Z/zm)^2
+  CH=sqrt(CD)*karman/log(Z/zh)
+  CE=sqrt(CD)*karman/log(Z/ze)
   #kinematic surface flux
-  ustar=-sqrt(CD)*abs(UA[1])*UA[1]
-  tstar=-sqrt(CH)*abs(UA[1])*(ΘA[1]-TS[end])
-  qstar=-sqrt(CE)*abs(UA[1])*(qA[1]-q_v[end])
+  ustar=sqrt(CD)*abs(UA-US)
+  tstar=CH/sqrt(CD)*abs(UA-US)*(TS-ΘA)
+  qstar=CE/sqrt(CD)*abs(UA-US)*(qV-qA)
 
-  L=0;
+  println("TS=",TS)
+  println("ΘA=",ΘA)
+  MOL=0;
 
   for i=1:5
-    wθv=tstar*(1+humid_fac*qA[1])+humid_fac*ΘA[1]*qstar
-    L=-ΘA[1]*ustar^3/(karman*gravity_mks*wθv)
+    wθv=tstar*(1+humid_fac*qA)+humid_fac*ΘA*qstar
+    MOL=-ΘA*ustar^3/(karman*gravity_mks*wθv)
     
-    #CD=karman^2/(log(ZAC[1]/zm)-holtslag_psim(ZAC[1]/L))
-    #CH=CD/(log(ZAC[1]/zh)-holtslag_psis(ZAC[1]/L))
-    #CE=CD/(log(ZAC[1]/ze)-holtslag_psis(ZAC[1]/L))
+    ψm1=max(min(psim(Z/MOL),1),-1)
+    ψs1=max(min(psis(Z/MOL),1),-1)
 
-    CD=CD/(1+CD*(log(ZAC[1]/zm)-holtslag_psim(ZAC[1]/L)/karman))
-    CH=CH/(1+CH*(log(ZAC[1]/zm)-holtslag_psis(ZAC[1]/L)/karman))
-    CE=CE/(1+CE*(log(ZAC[1]/zm)-holtslag_psis(ZAC[1]/L)/karman))
+    CD1=karman^2/(log(Z/zm)-ψm1)^2
+    CH1=sqrt(CD1)*karman/(log(Z/zh)-ψs1)
+    CE1=sqrt(CD1)*karman/(log(Z/ze)-ψs1)
 
-    ustar=-sqrt(CD)*abs(UA[1])*UA[1]
-    tstar=-sqrt(CH)*abs(UA[1])*(ΘA[1]-TS[end])
-    qstar=-sqrt(CE)*abs(UA[1])*(qA[1]-q_v[end])
+    ∂CD∂ψm=(CD1-CD)/2
+    ∂CH∂ψm=(CH1-CH)/2
+    ∂CE∂ψm=(CE1-CE)/2
+
+    CD=CD+∂CD∂ψm
+    CH=CH+∂CH∂ψm
+    CE=CE+∂CE∂ψm
+    ψm=ψm1
+    ψs=ψs1
+
+    ustar=sqrt(CD)*abs(UA-US)
+    tstar=sqrt(CH)*abs(UA-US)*(TS-ΘA)
+    qstar=sqrt(CE)*abs(UA-US)*(qV-qA)
 
   end
 
-  SH=-ρA[1]*CH*cp*abs(UA[1])*(ΘA[1]-TS[end])
-  LH=-ρA[1]*CE*Av*abs(UA[1])*(qA[1]-q_v[end])
-  TAU=ρA[1]*CD*abs(UA[1])*UA[1];
+  #rs = 10*exp(35.63*(0.15-theta_top)); # soil surface resistance to vapor flow
+  #rv = 1/(u*constants.k^2)*(log((atm_parameters.z_ref-atm_parameters.d+atm_parameters.z_H)/atm_parameters.z_oH)+psi_H)*
+  #    (log((atm_parameters.z_ref-atm_parameters.d+atm_parameters.z_m)/atm_parameters.z_om)+psi_m);
+  #rH = rv;
 
-  MOL=L;
-  E=-LH/Av;
+  SH=ρA*CH*cp*abs(UA)*(TS-ΘA)
+  LH=ρA*CE*Av*abs(UA)*(qV-qA)
+  TAU=ρA*CD*abs(UA)*UA;
 
-  Qnet=SW-LH-SH-LW;
+  EVAP=LH/Av;
+  #Qnet=SW-LH-SH-LW;
 
+  return TAU, LH, SH, EVAP, CD, CH, CE, MOL
 end
