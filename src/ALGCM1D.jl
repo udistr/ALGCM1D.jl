@@ -59,11 +59,11 @@ function run(start_time)
 
   global model_time=start_time # model clock
   global plt
-  global LH,SH,Qnet,SW,LW,TAU,EVAP,TS,theta_l,theta_v
-  global ΘA,qA,ρA,PA,UA
-  global head,q_l,q_v
-  global KAm,KAt,γcq,γct,γcm
-  global TAup
+  global LH,SH,Qnet,SW,LW,TAU,EVAP # surface fluxes
+  global ΘA,qA,ρA,PA,UA # atmosphere state variables
+  global head,q_l,q_v,TS,theta_l,theta_v # soil state variables
+  global KAm,KAt,γcq,γct,γcm # vertical mixing terms
+   
   
   Q=zeros(n)
   sw=zeros(n)
