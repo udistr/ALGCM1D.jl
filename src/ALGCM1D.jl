@@ -59,7 +59,8 @@ function run(start_time)
   global model_time=start_time # model clock
   global julian_day,t
   global plt
-  global LH,SH,Qnet,SW,LW,TAU,EVAP,qA,ρA,TS,theta_l
+  global LH,SH,Qnet,SW,LW,TAU,EVAP,qA,ρA,TS,theta_l,theta_v
+  global head,q_l,q_v
   global KAm,KAt,γcq,γct,γcm
   global TAup
   
@@ -120,7 +121,7 @@ function run(start_time)
       # Soil
       # Input: fluxes
       ########################################################################
-      soil(model_time)
+      TS,head,theta_l,theta_v,q_l,q_v=soil(TS,head,EVAP[1],ΔT)
 
       ########################################################################
       # Atmosphere

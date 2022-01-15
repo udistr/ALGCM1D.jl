@@ -1,6 +1,6 @@
-function soil(mtime)
+function soil(TS,head,EVAP,dt)
 
-  global head,TS,soil_parameters,theta_l,theta_v,MOL,EVAP,rho_w,q_l,q_v
+  #global head,TS,soil_parameters,theta_l,theta_v,EVAP,rho_w,q_l,q_v
 
   rho_w = 1000 .-7.3e-3.*(TS.-(273+4)).^2 .+ 3.79e-5.*(TS.-(273+4)).^3;  #water density [kg m^-3]
   q_o = EVAP[1]./rho_w[end];
@@ -30,5 +30,7 @@ theta_l=theta_l1
 theta_v=theta_v1
 q_l=q_l1
 q_v=q_v1
+
+TS,head,theta_l,theta_v,q_l,q_v
 
 end
