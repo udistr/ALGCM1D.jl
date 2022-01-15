@@ -1,4 +1,4 @@
-function atmosphere(mtime)
+function atmosphere(UAst,ΘAst,qAst,TAU,EVAP,SH,KAm,KAt,γcq,γct,ΔZA)
 
   global Θv,TA,TS,ρA,ustar,LH,SH,E,LW,TAU,Qnet,SW
   global KAm,KAt
@@ -28,7 +28,7 @@ function atmosphere(mtime)
       KAt[2:end-1].*(qA[2:end-1]-qA[3:end  ])/ΔZA^2*ΔT+
       (γcq[1:end-2].*KAt[1:end-2]-γcq[2:end-1].*KAt[2:end-1])/ΔZA*ΔT);
 
-  ΘAst[1]=ΘA[1]+(SH[1])/cpa/(ΔZA*ΘA[1])*ΔT-
+  ΘAst[1]=ΘA[1]+(SH)/cpa/(ΔZA*ΘA[1])*ΔT-
         (1-Aimp)*(KAt[1]*(ΘA[1]-ΘA[2])/ΔZA^2*ΔT+
         (-γct[1].*KAt[1])/ΔZA*ΔT);
   ΘAst[end]=ΘA[end]-
@@ -52,27 +52,7 @@ function atmosphere(mtime)
       qA1=A*qAst; ΘA1=A*ΘAst;
   end
 
-  TA=(ΘA1).*(PA./PA[1]).^(2/7).-d2k;
-  ρA=PA./(Rgas.*(TA.+d2k));
-
-  if moist==1
-      qsat=saltsat*cvapor_fac*exp.(-cvapor_exp./(TA.+d2k))./ρA;
-      dq=(qA.-qsat).*((qA1.-qsat).>0);
-      dq=min.(dq,qA1);
-      # change of temperature due to condensation
-      dΘA1=Av./cpa.*(PA[1]./PA).^(2/7).*dq;
-      # change of temperature due to change in staurated vapor pressure
-      dΘA2=Av.^2 ./Rv ./cpa.*(PA[1]./PA).^(2*2/7).*qsat./ΘA1.^2 .*dq;
-      #println("dΘA")
-      #println(dΘA1)
-      #println("============")
-      dΘA=dΘA1+dΘA2; #[J/kg][j-1 kg K]
-      #println([i maximum(dTHETA) maximum(dq)])
-      ind=qA1.>qsat;
-      qA1[ind]=qA1[ind]-dq[ind];
-      ΘA1[ind]=ΘA1[ind]+dΘA[ind];
-      TA=(ΘA1).*(PA./PA[1]).^(2/7).-d2k;
-  end
-
   qA=qA1; ΘA=ΘA1; UA=UA1;
+
+  return UA,ΘA,qA
 end

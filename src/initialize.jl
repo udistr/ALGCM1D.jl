@@ -17,8 +17,8 @@ global qS=0.01
 ############################################################################
 # atmospheric temperature in DegC
 TA=25 .-0.007.*ZAC;
-PA[1]=101300;
-PA[2:vleva]=PA[1].*exp.(-cumsum(ΔZA./(Rgas.*(TA[2:end].+d2k)./gravity_mks)));
+global PA0=101300;
+PA=PA0.*exp.(-cumsum(ΔZA./(Rgas.*(TA.+d2k)./gravity_mks)));
 ρA=PA./(Rgas.*(TA.+d2k));
 # atmospheric potential temperature in kelvin
 ΘA[:]=(TA.+d2k).*(PA[1]./PA).^(2/7);

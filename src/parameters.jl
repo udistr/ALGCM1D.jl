@@ -2,7 +2,7 @@
 
 # schemes
 cpl=1;
-moist=1;
+domoist=1;
 
 #boundary conditions
 TAup=270; #top model temperature

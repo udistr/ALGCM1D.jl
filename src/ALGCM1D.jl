@@ -23,6 +23,7 @@ include("psis.jl")
 include("surface.jl")
 include("holtslag.jl")
 include("turbulence.jl")
+include("moist.jl")
 
 include("atm_parameters.jl")
 include("hydraulic_variables.jl")
@@ -57,9 +58,9 @@ end
 function run(start_time)
 
   global model_time=start_time # model clock
-  global julian_day,t
   global plt
-  global LH,SH,Qnet,SW,LW,TAU,EVAP,qA,ρA,TS,theta_l,theta_v
+  global LH,SH,Qnet,SW,LW,TAU,EVAP,TS,theta_l,theta_v
+  global ΘA,qA,ρA,PA,UA
   global head,q_l,q_v
   global KAm,KAt,γcq,γct,γcm
   global TAup
@@ -127,7 +128,18 @@ function run(start_time)
       # Atmosphere
       # Input: fluxes, albedo
       ########################################################################
-      atmosphere(model_time)    
+      UA,ΘA,qA=atmosphere(UA,ΘA,qA,TAU,EVAP,SH,KAm,KAt,γcq,γct,ΔZA)
+      
+      ########################################################################
+      # Moist
+      # Input: fluxes, albedo
+      ########################################################################
+      if domoist==1
+        θA,qA=moist(ΘA,qA,ρA,PA)
+      end
+      TA=(ΘA).*(PA./PA0).^(2/7).-d2k;
+      PA=PA0.*exp.(-cumsum(ΔZA./(Rgas.*(TA.+d2k)./gravity_mks)));
+      ρA=PA./(Rgas.*(TA.+d2k));
 
       if rem(i,3600000)==0;#3600*6/dt
         title = plot(title = model_time, grid = false, axis = false,
