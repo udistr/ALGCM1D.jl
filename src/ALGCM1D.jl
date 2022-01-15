@@ -57,9 +57,11 @@ end
 function run(start_time)
 
   global model_time=start_time # model clock
-  global jd,t
+  global julian_day,t
   global plt
-  global LH,SH,Qnet,SW,LW,TAU,EVAP
+  global LH,SH,Qnet,SW,LW,TAU,EVAP,qA,ρA,TS,theta_l
+  global KAm,KAt,γcq,γct,γcm
+  global TAup
   
   Q=zeros(n)
   sw=zeros(n)
@@ -73,10 +75,10 @@ function run(start_time)
       # time
       ########################################################################
 
-      epochdays=Dates.date2epochdays(Date(model_time))
-      t=(Dates.datetime2epochms(model_time)/1000-epochdays*24*60*60)/3600;
+      EpochDays=Dates.date2epochdays(Date(model_time))
+      TimeOfDay=(Dates.datetime2epochms(model_time)/1000-EpochDays*24*60*60)/3600;
       #julian day
-      jd=Dates.datetime2julian(model_time)-Dates.datetime2julian(DateTime(year(model_time)));
+      JulianDay=Dates.datetime2julian(model_time)-Dates.datetime2julian(DateTime(year(model_time)));
 
       println(i,"   ",model_time)
       ########################################################################
@@ -85,7 +87,9 @@ function run(start_time)
       # Output: longwave and shortwave radiation
       # Future input: cloud fraction and chemestry
       ########################################################################
-      rad(model_time)
+      # Total preciptible water in cm
+      PW=sum(qA ./ 1000 .* ρA .* ΔZA)*100 # (kg/kg) / (kg/m^3) * (kg/m^3) * m * (100 cm/m)= cm
+      SW,LW=rad(TS[end],TAup,theta_l[end],PW,lat,lon,JulianDay,TimeOfDay)
       #println("SW")
       #println(SW)
       #println("---------")
@@ -110,7 +114,7 @@ function run(start_time)
       # latent heat, sensible heat, wind stress
       # Output: vertical diffusion for momentum, heat and water
       ########################################################################
-      turbulence(model_time)
+      KAm,KAt,γcq,γct,γcm=turbulence(ΘA,qA,UA,UA*0,LH,SH,ustar,ρA,ZAF)
 
       ########################################################################
       # Soil
@@ -158,3 +162,7 @@ function run(start_time)
 end
 
 end
+
+#if abspath(PROGRAM_FILE) == @__FILE__
+#  main()
+#end
