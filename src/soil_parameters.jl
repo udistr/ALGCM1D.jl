@@ -4,12 +4,12 @@
   b2::R = 0.393;
   b3::R = 1.534;
   #retention - VG model
-  alpha::R = 5;
-  n::R = 2;
+  alpha::R = 2;
+  n::R = 1.5;
   m::R = 1-1/n;
   theta_s::R = 0.4;
   theta_r::R = 0.01;
-  Ks::R = 2/(24*60*60);
+  Ks::R = 1/(24*60*60);
   #matric head top constrain
   h_max::R = -1e20;
   #additional parameters

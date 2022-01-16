@@ -22,15 +22,14 @@ function soil(TS,head,EVAP,dt)
           #println(dt2)
 
       end
-end     
+  end     
 
 TS=TS1
 head=head1
 theta_l=theta_l1
 theta_v=theta_v1
-q_l=q_l1
-q_v=q_v1
+rho_vs=rho_vs1
 
-TS,head,theta_l,theta_v,q_l,q_v
+return TS,head,theta_l,theta_v,rho_vs
 
 end

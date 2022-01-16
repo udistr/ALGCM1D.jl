@@ -27,8 +27,12 @@ function surface(US,UA,TS,ΘA,qV,qA,ρA,Z)
   tstar=CH/sqrt(CD)*abs(UA-US)*(TS-ΘA)
   qstar=CE/sqrt(CD)*abs(UA-US)*(qV-qA)
 
-  println("TS=",TS)
-  println("ΘA=",ΘA)
+  #println("TS=",TS)
+  #println("ΘA=",ΘA)
+  #println("(qV-qA)=",(qV-qA))
+  #println("(qV)=",(qV))
+  #println("(qA)=",(qA))
+
   MOL=0;
 
   for i=1:5

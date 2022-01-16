@@ -44,7 +44,8 @@ function hydraulic_variables(h, T, constants, soil_parameters)
   soil_hydraulic=shydraulic(soil_hydraulicC,soil_hydraulicK,soil_hydraulicK_vh,soil_hydraulicK_h,
                     soil_hydraulicK_lT,soil_hydraulicK_vT,soil_hydraulicK_T)
 
-  rho_vs = rho_vs[end];
+  #rho_vs = rho_vs[end];
+
 
   return theta_l, theta_v, soil_hydraulic, rho_vs
 

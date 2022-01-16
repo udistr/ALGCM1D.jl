@@ -19,7 +19,7 @@ function rad(TS,TAup,theta_l,PW,lat,lon,JulianDay,TimeOfDay)
     end
   end
 
-  SW=albedo.*(SunConstant.*AOI);
+  SW=(1-albedo).*(SunConstant.*AOI);
   # longwave radiation at the surface from Stensrud eq. 8.24-8.25
   ϵa=0.725+0.17*log10(sum(qA/1000*1.2*ΔZA)*100)
   LW=emissivity*sb*((TS)^4 - ϵa*(TAup)^4);

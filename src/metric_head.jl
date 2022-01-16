@@ -2,7 +2,7 @@ function metric_head(h,T, q_o,constants, soil_parameters, soil_numerical_paramet
 
 # initializing
 h_old = h;
-theta_l, theta_v, soil_hydraulic = hydraulic_variables(h, T, constants, soil_parameters);
+theta_l, theta_v, soil_hydraulic, rho_vs = hydraulic_variables(h, T, constants, soil_parameters);
 
 O=zeros(2)
 O[1] = 1; 
@@ -30,16 +30,20 @@ while O[1]>soil_numerical_parameters.eps_h
     
     O[2] = mean(abs.(temp_h_2-h)./abs.(temp_h));
     
+
+
     if O[2]<O[1]
         O[1] = O[2];
     else
         dt = dt/2;
         h = h_old;
-        theta_l, theta_v, soil_hydraulic = hydraulic_variables(h, T, constants, soil_parameters);        
+        theta_l, theta_v, soil_hydraulic, rho_vs  = hydraulic_variables(h, T, constants, soil_parameters);        
         O[1] = 1;
+
     end
     #println(dt)
 end
+
 
 q_l[1] = -soil_hydraulic.K[1];
 q_v[1] = 0;
@@ -50,7 +54,6 @@ for i = 2:soil_numerical_parameters.Ns
     q_v[i] = -soil_hydraulic.K_vT[i]*(T[i]-T[i-1])/soil_numerical_parameters.dz_s-
         soil_hydraulic.K_vh[i]*((h[i]-h[i-1])/soil_numerical_parameters.dz_s);    
 end
-
 
 return h, theta_l, theta_v, q_l, q_v, rho_vs, dt
 

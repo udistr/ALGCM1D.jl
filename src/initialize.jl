@@ -16,7 +16,7 @@ global qS=0.01
 # Initial conditions
 ############################################################################
 # atmospheric temperature in DegC
-TA=25 .-0.007.*ZAC;
+TA=28 .-0.007.*ZAC;
 global PA0=101300;
 PA=PA0.*exp.(-cumsum(ΔZA./(Rgas.*(TA.+d2k)./gravity_mks)));
 ρA=PA./(Rgas.*(TA.+d2k));
@@ -61,8 +61,8 @@ q0=1.01*qA[1]
 
 
 #initial conditions
-T_initial = 273+25;
-h_initial = -1;
+T_initial = 273+28;
+h_initial = -3;
 
 global head=h_initial*ones(soil_numerical_parameters.Ns,1)
 global TS=T_initial*ones(soil_numerical_parameters.Ns,1)

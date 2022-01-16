@@ -61,7 +61,7 @@ function run(start_time)
   global plt
   global LH,SH,Qnet,SW,LW,TAU,EVAP # surface fluxes
   global ΘA,qA,ρA,PA,UA # atmosphere state variables
-  global head,q_l,q_v,TS,theta_l,theta_v # soil state variables
+  global head,TS,theta_l,theta_v,rho_vs # soil state variables
   global KAm,KAt,γcq,γct,γcm # vertical mixing terms
    
   
@@ -99,8 +99,11 @@ function run(start_time)
       if rem(i,360)==0;
         #p1=scatter([i],[TS[end]])
         #display(p1)
-        p2=scatter!([Dates.format.(model_time,"dd:HH")],[hpbl],xlabel="time [DAY:HOUR]",ylabel="PBL height",xrot=60)
-        display(p2)
+        #p1=scatter!([Dates.format.(model_time,"dd:HH")],[theta_l[end]],xlabel="time [DAY:HOUR]",ylabel="PBL height",xrot=60)
+        p1=scatter!([Dates.format.(model_time,"dd:HH")],[hpbl[1]],xlabel="time [DAY:HOUR]",ylabel="PBL height",xrot=60)
+        display(p1)
+        #p2=scatter!([Dates.format.(model_time,"dd:HH")],[hpbl],xlabel="time [DAY:HOUR]",ylabel="PBL height",xrot=60)
+        #display(p2)
       end
       ########################################################################
       # Surface
@@ -108,8 +111,13 @@ function run(start_time)
       # Input from atmosphere: surface specific humidity, temperature and wind
       # Output: latent heat, sensible heat and wind stress.
       ########################################################################
-      TAU,LH,SH,EVAP=surface(0,UA[1],TS[end],ΘA[1],q_v[end],qA[1],ρA[1],ZAC[1])
+      println("Qnet=",Qnet[1])
+      #println("qA=",qA[1])
+
+
+      TAU,LH,SH,EVAP=surface(0,UA[1],TS[end],ΘA[1],rho_vs[end]/ρA[1],qA[1],ρA[1],ZAC[1])
       Qnet=SW-LH-SH-LW
+      println("SW=",SW[1])
       ########################################################################
       # turbulence
       # Input: temperature, specific humidity, air densiy, surface wind speed, 
@@ -122,7 +130,7 @@ function run(start_time)
       # Soil
       # Input: fluxes
       ########################################################################
-      TS,head,theta_l,theta_v,q_l,q_v=soil(TS,head,EVAP[1],ΔT)
+      TS,head,theta_l,theta_v,rho_vs=soil(TS,head,EVAP[1],ΔT)
 
       ########################################################################
       # Atmosphere
@@ -141,7 +149,7 @@ function run(start_time)
       PA=PA0.*exp.(-cumsum(ΔZA./(Rgas.*(TA.+d2k)./gravity_mks)));
       ρA=PA./(Rgas.*(TA.+d2k));
 
-      if rem(i,3600000)==0;#3600*6/dt
+      if rem(i,360000)==0;#3600*6/dt
         title = plot(title = model_time, grid = false, axis = false,
         showaxis = false, bottom_margin = -10pt,yaxis=nothing,titlefont = 100)
         #=
@@ -155,8 +163,8 @@ function run(start_time)
         println(KAm)
         =#
         f1=plot(ZAC,UA,ylabel=("UA"));
-        f2=plot(ZAC,Θv.-273.15,ylabel=("Θv")); #ylim([19 21]);...
-        f3=plot(ZAC,qA,ylabel=("q"));
+        f2=plot(ZAC,ΘA.-273.15,ylabel=("ΘA")); #ylim([19 21]);...
+        f3=plot(ZAC,qA,ylabel=("qA"));
         f4=plot(ZAC,KAm,ylabel=("KAm"));
         f5=plot(soil_numerical_parameters.z_s,theta_l,ylabel=("theta_l"));
         f6=plot(soil_numerical_parameters.z_s,TS.-273.15,ylabel=("TS")); #ylim([19 21]);...
